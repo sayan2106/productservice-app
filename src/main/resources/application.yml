@@ -1,0 +1,6 @@
+swagger:
+  application:
+    description: Service for Products
+    
+server:
+  port: 8086
