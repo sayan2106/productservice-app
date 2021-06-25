@@ -16,13 +16,16 @@ import com.google.gson.GsonBuilder;
 import dk.nuuday.product.dto.Product;
 import dk.nuuday.product.dto.Root;
 
+/*
+ * This method using for reading data from the URIs of mobile Broadband and mobile Voice
+ */
 public class ProductAggregatorImpl {
-	
+
 	String mobileBroadbandJson = "https://products-json-example.s3.eu-central-1.amazonaws.com/data.json";
 	String mobileVoiceJson = "https://products-json-example.s3.eu-central-1.amazonaws.com/voice.json";
 	List<Product> aggregatedProduct;
 	Map<String, Product> productMap = Collections.synchronizedMap(new HashMap<>());
-	
+
 	public String readContentFromUrl(String jsonUrl) {
 		StringBuilder content = new StringBuilder();
 		try {
@@ -39,11 +42,11 @@ public class ProductAggregatorImpl {
 		}
 		return content.toString();
 	}
-	
-	
-	
-	
-	
+
+	/*
+	 * This method used for aggregation of both the files for mobile Broadband and mobile Voice
+	 */
+
 	public Map<String, Product> aggregatedProducts() {
 		String mobileBroadbandJsonString = readContentFromUrl(mobileBroadbandJson);
 		GsonBuilder mobileBroadbandbuilder = new GsonBuilder();
@@ -51,38 +54,27 @@ public class ProductAggregatorImpl {
 		Gson mobileBroadbandGson = mobileBroadbandbuilder.create();
 		Root mobileBroadbandRoot = mobileBroadbandGson.fromJson(mobileBroadbandJsonString, Root.class);
 		List<Product> mobileBroadbandProducts = mobileBroadbandRoot.getProduct();
-		System.out.println(mobileBroadbandRoot.getProduct().size());
-		System.out.println(mobileBroadbandRoot.getProduct().get(0).getProductCode());
-		
-		
+
+
 		String mobileVoiceJsonString = readContentFromUrl(mobileVoiceJson);
 		GsonBuilder mobileVoiceJsondbuilder = new GsonBuilder();
 		mobileVoiceJsondbuilder.setPrettyPrinting();
 		Gson mobileVoiceGson = mobileVoiceJsondbuilder.create();
-		Root mobileVoiceRoot = mobileVoiceGson.fromJson(mobileVoiceJsonString, Root.class);
-		System.out.println(mobileVoiceRoot.getProduct().size());
-		System.out.println(mobileVoiceRoot.getProduct().get(0).getProductCode());
-		
-		
+		Root mobileVoiceRoot = mobileVoiceGson.fromJson(mobileVoiceJsonString, Root.class);		
+
 		aggregatedProduct = new ArrayList<Product>();
-		
+
 		for (int i = 0; i < mobileBroadbandProducts.size(); i++) {
 			productMap.put(mobileBroadbandProducts.get(i).getProductCode(),  mobileBroadbandProducts.get(i));
 		}
-		
+
 		for (int j = 0; j < mobileVoiceRoot.getProduct().size(); j++) {
 			productMap.put(mobileVoiceRoot.getProduct().get(j).getProductCode(), (Product) mobileVoiceRoot.getProduct().get(j));
 		}
 
 		return productMap;
-		
-			}
-	
-	
-	public static void main(String[] args) {
-		
-		new ProductAggregatorImpl().aggregatedProducts();
-		
+
 	}
-	
+
+
 }
