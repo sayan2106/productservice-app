@@ -19,10 +19,11 @@ import dk.nuuday.product.dto.Root;
 /*
  * This method using for reading data from the URIs of mobile Broadband and mobile Voice
  */
-public class ProductAggregatorImpl {
 
-	String mobileBroadbandJson = "https://products-json-example.s3.eu-central-1.amazonaws.com/data.json";
-	String mobileVoiceJson = "https://products-json-example.s3.eu-central-1.amazonaws.com/voice.json";
+public class ProductAggregatorImpl {    
+
+	String mobileBroadbandJson = ConfigurationProperty.dataUrl;
+	String mobileVoiceJson = ConfigurationProperty.voiceUrl;
 	List<Product> aggregatedProduct;
 	Map<String, Product> productMap = Collections.synchronizedMap(new HashMap<>());
 
