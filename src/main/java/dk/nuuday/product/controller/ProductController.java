@@ -3,15 +3,11 @@ package dk.nuuday.product.controller;
 
 
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.NoHandlerFoundException;
-
 import dk.nuuday.product.core.ProductService;
 import dk.nuuday.product.dto.Product;
 import dk.nuuday.product.exceptionhandling.ProductNotFoundException;
@@ -53,7 +49,6 @@ public class ProductController {
 		
 		
 		logger.info("------inside getProductByCode----");
-		//return new ResponseEntity<Product>(productService.getProductByCode(productcode), HttpStatus.OK);
 		return productService.getProductByCode(productcode);
 	}
 
